@@ -11,7 +11,7 @@
             --bg-color: #1a5e10;
             --card-back-img: none;
             --card-back-color: #1a4da1;
-        }
+        &rbrace;
 
         body {
             margin: 0;
@@ -21,15 +21,11 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-        }
-
-        #ui-bar {
-            display: flex;
+       display: flex;
             justify-content: space-between;
             15px
             background: rgba(0,0,0,0.3);
-        }
+        &rbrace;
 
         #game-board {
             position: relative;
@@ -38,7 +34,7 @@
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
-        }
+        &rbrace;
 
         .slot {
             position: absolute;
@@ -46,7 +42,7 @@
             height: var(--card-height);
             border: 2px solid rgba(255,255,255,0.1);
             border-radius: 8px;
-        }
+        &rbrace;
 
         /* Card Styling */
         .card {
@@ -58,7 +54,7 @@
             transition: transform 0.1s, box-shadow 0.1s;
             user-select: none;
             touch-action: none;
-        }
+        &rbrace;
 
         .card-face {
             background: white;
@@ -72,10 +68,10 @@
             box-sizing: border-box;
             color: black;
             border: 1px solid #ccc;
-        }
+        &rbrace;
 
-        .card.red { color: #d40000; }
-        .card.black { color: #000; }
+        .card.red { color: #d40000; &rbrace;
+        .card.black { color: #000; &rbrace;
 
         .card-back {
             background-color: var(--card-back-color);
@@ -87,22 +83,22 @@
             border-radius: 8px;
             border: 3px solid white;
             box-sizing: border-box;
-        }
+        &rbrace;
 
-        .card.face-up .card-back { display: none; }
-        .card.face-down .card-face { display: none; }
+        .card.face-up .card-back { display: none; &rbrace;
+        .card.face-down .card-face { display: none; &rbrace;
 
         /* Board Layout */
-        #stock { top: 20px; left: 20px; }
-        #waste { top: 20px; left: calc(20px + var(--card-width) + var(--card-gap)); }
-        .foundation { top: 20px; }
-        .tableau-slot { top: calc(40px + var(--card-height)); }
+        #stock { top: 20px; left: 20px; &rbrace;
+        #waste { top: 20px; left: calc(20px + var(--card-width) + var(--card-gap)); &rbrace;
+        .foundation { top: 20px; &rbrace;
+        .tableau-slot { top: calc(40px + var(--card-height)); &rbrace;
 
         .dragging {
             z-index: 1000 !important;
             opacity: 0.8;
             pointer-events: none;
-        }
+        &rbrace;
 
         button {
             padding: 8px 15px;
@@ -110,7 +106,7 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
-        }
+        &rbrace;
     </style>
 </head>
 <body>
@@ -131,19 +127,19 @@
 
 <script>
 const SUITS = ['h', 'd', 'c', 's'];
-const SYMBOLS = { h: '♥', d: '♦', c: '♣', s: '♠' };
+const SYMBOLS = { h: '♥', d: '♦', c: '♣', s: '♠' &rbrace;;
 const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
 function handleUpload(e) {
     const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = (event) =&gt; {
             document.documentElement.style.setProperty('--card-back-img', `url(${event.target.result})`);
-        };
+        &rbrace;;
         reader.readAsDataURL(file);
-    }
-}
+    &rbrace;
+&rbrace;
 
 class Card {
     constructor(suit, rank, value) {
@@ -152,7 +148,7 @@ class Card {
         this.value = value;
         this.faceUp = false;
         this.element = this.createEl();
-    }
+    &rbrace;
 
     createEl() {
         const div = document.createElement('div');
@@ -164,24 +160,18 @@ includesdiv.className = `card ${['h','d'].includes(this.suit) ? 'red' : 'black'}
                 <div style="align-self: flex-end; transform: rotate(180deg)">${this.rank}${SYMBOLS[this.suit]}</div>
             </div>
         `;
-        div.onmousedown = (e) => game.startDrag(e, this);
+        div.onmousedown = (e) =&gt; game.startDrag(e, this);
         return div;
-    }
+    &rbrace;
 
     flip(up) {
         this.faceUp = up;
         this.element.classList.toggle('face-up', up);
-        this.element.classList.toggle('face-down', !up);
-    }
-}
-
-class Solitaire {
-    constructor() {
-        this.board = document.getElementById('game-board');
+        this.element.classList.toggle('face-down',
         this.moves = 0;
         this.initBoard();
         this.newGame();
-    }
+    &rbrace;
 
     initBoard() {
         for(let i=0; i<4; i++) {
@@ -190,27 +180,27 @@ class Solitaire {
             f.id = `f-${i}`;
             f.style.right = `calc(20px + ${i * (90 + 15)}px)`;
             this.board.appendChild(f);
-        }
+        &rbrace;
         for(let i=0; i<7; i++) {
             let t = document.createElement('div');
             t.className = 'slot tableau-slot';
             t.id = `t-${i}`;
             t.style.left = `calc(20px + ${i * (85 + 15)}px)`;
             this.board.appendChild(t);
-        }
-        document.getElementById('stock').onclick = () => this.drawStock();
-    }
+        &rbrace;
+        document.getElementById('stock').onclick = () =&gt; this.drawStock();
+    &rbrace;
 
     newGame() {
         this.moves = 0;
         document.getElementById('move-count').innerText = "0";
-        this.board.querySelectorAll('.card').forEach(c => c.remove());
+        this.board.querySelectorAll('.card').forEach(c =&gt; c.remove());
         
         let deck = [];
-        SUITS.forEach(s => RANKS.forEach((r, v) => deck.push(new Card(s, r, v+1))));
-        deck.sort(() => Math.random() - 0.5);
+        SUITS.forEach(s =&gt; RANKS.forEach((r, v) =&gt; deck.push(new Card(s, r, v+1))));
+        deck.sort(() =&gt; Math.random() - 0.5);
 
-        this.piles = { stock: deck, waste: [], foundations: [[],[],[],[]], tableau: [[],[],[],[],[],[],[]] };
+        this.piles = { stock: deck, waste: [], foundations: [[],[],[],[]], tableau: [[],[],[],[],[],[],[]] &rbrace;;
 
         for(let i=0; i<7; i++) {
             for(let j=i; j<7; j++) {
@@ -218,40 +208,40 @@ class Solitaire {
                 this.piles.tableau[j].push(card);
                 if(i === j) card.flip(true);
                 this.renderCard(card, 'tableau', j, this.piles.tableau[j].length - 1);
-            }
-        }
-        this.piles.stock.forEach(c => this.renderCard(c, 'stock'));
-    }
+            &rbrace;
+        &rbrace;
+        this.piles.stock.forEach(c =&gt; this.renderCard(c, 'stock'));
+    &rbrace;
 
     renderCard(card, area, pIdx, cIdx) {
         this.board.appendChild(card.element);
         card.element.style.zIndex = cIdx || 0;
         if(area === 'stock') { 
             card.element.style.top = '20px'; card.element.style.left = '20px'; 
-        } else if(area === 'waste') {
+        &rbrace; else if(area === 'waste') {
             card.element.style.top = '20px'; card.element.style.left = '120px';
-        } else if(area === 'tableau') {
+        &rbrace; else if(area === 'tableau') {
             card.element.style.top = (160 + (cIdx * 25)) + 'px';
             card.element.style.left = (20 + (pIdx * 100)) + 'px';
-        } else if(area === 'foundation') {
+        &rbrace; else if(area === 'foundation') {
             card.element.style.top = '20px';
             card.element.style.right = (20 + (pIdx * 105)) + 'px';
             card.element.style.left = 'auto';
-        }
-    }
+        &rbrace;
+    &rbrace;
 
     drawStock() {
         if(this.piles.stock.length === 0) {
             this.piles.stock = this.piles.waste.reverse();
             this.piles.waste = [];
-            this.piles.stock.forEach(c => { c.flip(false); this.renderCard(c, 'stock'); });
-        } else {
+            this.piles.stock.forEach(c =&gt; { c.flip(false); this.renderCard(c, 'stock'{"}"}; &rbrace;);
+        &rbrace; else {
             let card = this.piles.stock.pop();
             this.piles.waste.push(card);
             card.flip(true);
             this.renderCard(card, 'waste', 0, this.piles.waste.length);
-        }
-    }
+        &rbrace;
+    &rbrace;
 
     startDrag(e, card) {
         if(!card.faceUp) return;
@@ -263,25 +253,25 @@ class Solitaire {
             origin: pileInfo,
             offsetX: e.clientX,
             offsetY: e.clientY
-        };
+        &rbrace;;
 
-        this.dragData.cards.forEach(c => c.element.classList.add('dragging'));
+        this.dragData.cards.forEach(c =&gt; c.element.classList.add('dragging'));
         
-        const move = (ev) => {
+        const move = (ev) =&gt; {
             const dx = ev.clientX - this.dragData.offsetX;
             const dy = ev.clientY - this.dragData.offsetY;
-            this.dragData.cards.forEach(c => c.element.style.transform = `translate(${dx}px, ${dy}px)`);
-        };
+            this.dragData.cards.forEach(c =&gt; c.element.style.transform = `translate(${dx}px, ${dy}px)`);
+        &rbrace;;
 
-        const up = (ev) => {
+        const up = (ev) =&gt; {
             document.removeEventListener('mousemove', move);
             document.removeEventListener('mouseup', up);
             this.drop(ev);
-        };
+        &rbrace;;
 
         document.addEventListener('mousemove', move);
         document.addEventListener('mouseup', up);
-    }
+    &rbrace;
 
     drop(e) {
         const target = document.elementFromPoint(e.clientX, e.clientY);
@@ -292,26 +282,26 @@ class Solitaire {
         if(slot) {
             if(slot.id.startsWith('t-')) moved = this.tryMoveTableau(parseInt(slot.id.split('-')[1]));
             if(slot.id.startsWith('f-')) moved = this.tryMoveFoundation(parseInt(slot.id.split('-')[1]));
-        } else if(cardEl) {
+        &rbrace; else if(cardEl) {
             const tCard = this.findCard(cardEl);
             const tPile = this.getPile(tCard);
             if(tPile.area === 'tableau') moved = this.tryMoveTableau(tPile.pIdx);
             if(tPile.area === 'foundation') moved = this.tryMoveFoundation(tPile.pIdx);
-        }
+        &rbrace;
 
-        this.dragData.cards.forEach(c => {
+        this.dragData.cards.forEach(c =&gt; {
             c.element.classList.remove('dragging');
             c.element.style.transform = '';
             const p = this.getPile(c);
             this.renderCard(c, p.area, p.pIdx, p.idx);
-        });
+        &rbrace;);
 
         if(moved) {
             this.moves++;
             document.getElementById('move-count').innerText = this.moves;
             this.checkFlips();
-        }
-    }
+        &rbrace;
+    &rbrace;
 
     tryMoveTableau(idx) {
         const targetPile = this.piles.tableau[idx];
@@ -325,12 +315,12 @@ class Solitaire {
             this.dragData.origin.pile.splice(this.dragData.origin.idx);
             this.piles.tableau[idx].push(...this.dragData.cards);
             return true;
-        }
+        &rbrace;
         return false;
-    }
+    &rbrace;
 
     tryMoveFoundation(idx) {
-        if(this.dragData.cards.length > 1) return false;
+        if(this.dragData.cards.length &gt; 1) return false;
         const targetPile = this.piles.foundations[idx];
         const card = this.dragData.cards[0];
         const topCard = targetPile[targetPile.length - 1];
@@ -342,31 +332,31 @@ class Solitaire {
             this.dragData.origin.pile.splice(this.dragData.origin.idx);
             targetPile.push(card);
             return true;
-        }
+        &rbrace;
         return false;
-    }
+    &rbrace;
 
     checkFlips() {
         this.piles.tableau.forEach(p => { if(p.length > 0) p[p.length-1].flip(true); });
-    }
+    &rbrace;
 
     isAltColor(c1, c2) {
         const red = ['h', 'd'];
         return red.includes(c1.suit) !== red.includes(c2.suit);
-    }
+    &rbrace;
 
     getPile(card) {
-        if(this.piles.waste.includes(card)) return { area: 'waste', pile: this.piles.waste, idx: this.piles.waste.indexOf(card) };
-        for(let i=0; i<7; i++) if(this.piles.tableau[i].includes(card)) return { area: 'tableau', pIdx: i, pile: this.piles.tableau[i], idx: this.piles.tableau[i].indexOf(card) };
-        for(let i=0; i<4; i++) if(this.piles.foundations[i].includes(card)) return { area: 'foundation', pIdx: i, pile: this.piles.foundations[i], idx: this.piles.foundations[i].indexOf(card) };
+        if(this.piles.waste.includes(card)) return { area: 'waste', pile: this.piles.waste, idx: this.piles.waste.indexOf(card) &rbrace;;
+        for(let i=0; i<7; i++) if(this.piles.tableau[i].includes(card)) return { area: 'tableau', pIdx: i, pile: this.piles.tableau[i], idx: this.piles.tableau[i].indexOf(card) &rbrace;;
+        for(let i=0; i<4; i++) if(this.piles.foundations[i].includes(card)) return { area: 'foundation', pIdx: i, pile: this.piles.foundations[i], idx: this.piles.foundations[i].indexOf(card) &rbrace;;
         return null;
-    }
+    &rbrace;
 
     findCard(el) {
         const all = [...this.piles.waste, ...this.piles.tableau.flat(), ...this.piles.foundations.flat()];
-        return all.find(c => c.element === el);
-    }
-}
+        return all.find(c =&gt; c.element === el);
+    &rbrace;
+&rbrace;
 
 const game = new Solitaire();
 </script>
